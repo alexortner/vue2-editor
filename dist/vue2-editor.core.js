@@ -1,15 +1,15 @@
 /*!
  * vue2-editor v2.10.2 
- * (c) 2019 David Royer
+ * (c) 2020 David Royer
  * Released under the MIT License.
  */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('quill')) :
   typeof define === 'function' && define.amd ? define(['exports', 'quill'], factory) :
   (global = global || self, factory(global.Vue2Editor = {}, global.Quill));
-}(this, function (exports, Quill) { 'use strict';
+}(this, (function (exports, Quill) { 'use strict';
 
-  Quill = Quill && Quill.hasOwnProperty('default') ? Quill['default'] : Quill;
+  Quill = Quill && Object.prototype.hasOwnProperty.call(Quill, 'default') ? Quill['default'] : Quill;
 
   var defaultToolbar = [[{
     header: [false, 1, 2, 3, 4, 5, 6]
@@ -57,6 +57,8 @@
   };
 
   function _typeof(obj) {
+    "@babel/helpers - typeof";
+
     if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
       _typeof = function (obj) {
         return typeof obj;
@@ -123,6 +125,19 @@
     return _setPrototypeOf(o, p);
   }
 
+  function _isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+
+    try {
+      Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   function _assertThisInitialized(self) {
     if (self === void 0) {
       throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -139,8 +154,27 @@
     return _assertThisInitialized(self);
   }
 
+  function _createSuper(Derived) {
+    var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+    return function _createSuperInternal() {
+      var Super = _getPrototypeOf(Derived),
+          result;
+
+      if (hasNativeReflectConstruct) {
+        var NewTarget = _getPrototypeOf(this).constructor;
+
+        result = Reflect.construct(Super, arguments, NewTarget);
+      } else {
+        result = Super.apply(this, arguments);
+      }
+
+      return _possibleConstructorReturn(this, result);
+    };
+  }
+
   function _slicedToArray(arr, i) {
-    return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();
+    return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
   }
 
   function _arrayWithHoles(arr) {
@@ -148,6 +182,7 @@
   }
 
   function _iterableToArrayLimit(arr, i) {
+    if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;
     var _arr = [];
     var _n = true;
     var _d = false;
@@ -173,8 +208,82 @@
     return _arr;
   }
 
+  function _unsupportedIterableToArray(o, minLen) {
+    if (!o) return;
+    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === "Object" && o.constructor) n = o.constructor.name;
+    if (n === "Map" || n === "Set") return Array.from(o);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+  }
+
+  function _arrayLikeToArray(arr, len) {
+    if (len == null || len > arr.length) len = arr.length;
+
+    for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+
+    return arr2;
+  }
+
   function _nonIterableRest() {
-    throw new TypeError("Invalid attempt to destructure non-iterable instance");
+    throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+
+  function _createForOfIteratorHelper(o, allowArrayLike) {
+    var it;
+
+    if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
+      if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
+        if (it) o = it;
+        var i = 0;
+
+        var F = function () {};
+
+        return {
+          s: F,
+          n: function () {
+            if (i >= o.length) return {
+              done: true
+            };
+            return {
+              done: false,
+              value: o[i++]
+            };
+          },
+          e: function (e) {
+            throw e;
+          },
+          f: F
+        };
+      }
+
+      throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+    }
+
+    var normalCompletion = true,
+        didErr = false,
+        err;
+    return {
+      s: function () {
+        it = o[Symbol.iterator]();
+      },
+      n: function () {
+        var step = it.next();
+        normalCompletion = step.done;
+        return step;
+      },
+      e: function (e) {
+        didErr = true;
+        err = e;
+      },
+      f: function () {
+        try {
+          if (!normalCompletion && it.return != null) it.return();
+        } finally {
+          if (didErr) throw err;
+        }
+      }
+    };
   }
 
   /**
@@ -208,15 +317,15 @@
 
   var BlockEmbed = Quill.import("blots/block/embed");
 
-  var HorizontalRule =
-  /*#__PURE__*/
-  function (_BlockEmbed) {
+  var HorizontalRule = /*#__PURE__*/function (_BlockEmbed) {
     _inherits(HorizontalRule, _BlockEmbed);
+
+    var _super = _createSuper(HorizontalRule);
 
     function HorizontalRule() {
       _classCallCheck(this, HorizontalRule);
 
-      return _possibleConstructorReturn(this, _getPrototypeOf(HorizontalRule).apply(this, arguments));
+      return _super.apply(this, arguments);
     }
 
     return HorizontalRule;
@@ -226,9 +335,7 @@
   HorizontalRule.tagName = "hr";
   Quill.register("formats/horizontal", HorizontalRule);
 
-  var MarkdownShortcuts =
-  /*#__PURE__*/
-  function () {
+  var MarkdownShortcuts = /*#__PURE__*/function () {
     function MarkdownShortcuts(quill, options) {
       var _this = this;
 
@@ -467,12 +574,11 @@
         var lineStart = selection.index - offset;
 
         if (this.isValid(text, line.domNode.tagName)) {
-          var _iteratorNormalCompletion = true;
-          var _didIteratorError = false;
-          var _iteratorError = undefined;
+          var _iterator = _createForOfIteratorHelper(this.matches),
+              _step;
 
           try {
-            for (var _iterator = this.matches[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            for (_iterator.s(); !(_step = _iterator.n()).done;) {
               var match = _step.value;
               var matchedText = text.match(match.pattern);
 
@@ -484,18 +590,9 @@
               }
             }
           } catch (err) {
-            _didIteratorError = true;
-            _iteratorError = err;
+            _iterator.e(err);
           } finally {
-            try {
-              if (!_iteratorNormalCompletion && _iterator.return != null) {
-                _iterator.return();
-              }
-            } finally {
-              if (_didIteratorError) {
-                throw _iteratorError;
-              }
-            }
+            _iterator.f();
           }
         }
       }
@@ -515,12 +612,11 @@
         selection.length = selection.index++;
 
         if (this.isValid(text, line.domNode.tagName)) {
-          var _iteratorNormalCompletion2 = true;
-          var _didIteratorError2 = false;
-          var _iteratorError2 = undefined;
+          var _iterator2 = _createForOfIteratorHelper(this.matches),
+              _step2;
 
           try {
-            for (var _iterator2 = this.matches[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+            for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
               var match = _step2.value;
               var matchedText = text.match(match.pattern);
 
@@ -531,18 +627,9 @@
               }
             }
           } catch (err) {
-            _didIteratorError2 = true;
-            _iteratorError2 = err;
+            _iterator2.e(err);
           } finally {
-            try {
-              if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-                _iterator2.return();
-              }
-            } finally {
-              if (_didIteratorError2) {
-                throw _iteratorError2;
-              }
-            }
+            _iterator2.f();
           }
         }
       }
@@ -792,8 +879,8 @@
 
       options._ssrRegister = hook;
     } else if (style) {
-      hook = shadowMode ? function () {
-        style.call(this, createInjectorShadow(this.$root.$options.shadowRoot));
+      hook = shadowMode ? function (context) {
+        style.call(this, createInjectorShadow(context, this.$root.$options.shadowRoot));
       } : function (context) {
         style.call(this, createInjector(context));
       };
@@ -818,8 +905,6 @@
     return script;
   }
 
-  var normalizeComponent_1 = normalizeComponent;
-
   /* script */
   const __vue_script__ = script;
   /* template */
@@ -838,15 +923,19 @@
     
     /* style inject SSR */
     
+    /* style inject shadow dom */
+    
 
     
-    var VueEditor = normalizeComponent_1(
+    const __vue_component__ = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__, staticRenderFns: __vue_staticRenderFns__ },
       __vue_inject_styles__,
       __vue_script__,
       __vue_scope_id__,
       __vue_is_functional_template__,
       __vue_module_identifier__,
+      false,
+      undefined,
       undefined,
       undefined
     );
@@ -856,13 +945,13 @@
   function install(Vue) {
     if (install.installed) return;
     install.installed = true;
-    Vue.component("VueEditor", VueEditor);
+    Vue.component("VueEditor", __vue_component__);
   }
   var VPlugin = {
     install: install,
     version: version,
     Quill: Quill,
-    VueEditor: VueEditor
+    VueEditor: __vue_component__
   }; // Auto-install when vue is found (eg. in browser via <script> tag)
 
   var GlobalVue = null;
@@ -879,10 +968,10 @@
   /*************************************************/
 
   exports.Quill = Quill;
-  exports.VueEditor = VueEditor;
+  exports.VueEditor = __vue_component__;
   exports.default = VPlugin;
   exports.install = install;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
-}));
+})));

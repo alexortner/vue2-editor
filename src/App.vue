@@ -1,15 +1,12 @@
 <template>
   <div id="app">
-    <button @click="deleteImage">Delete</button>
+    <button @click="deleteImage">delete</button>
     <VueEditor
       ref="vEditor"
       v-model="content"
-      use-custom-image-handler
       use-markdown-shortcuts
       @focus="onEditorFocus"
       @blur="onEditorBlur"
-      @imageAdded="handleImageAdded"
-      @image-removed="handleImageRemoved"
     />
   </div>
 </template>
